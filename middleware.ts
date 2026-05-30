@@ -1,15 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { jwtVerify } from 'jose'
+
+const SECRET = new TextEncoder().encode(
+  process.env.AUTH_SECRET || 'fallback-dev-secret-change-in-production'
+)
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  // Only protect /admin routes (not /admin/login)
   if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) {
-    const sessionCookie =
-      req.cookies.get('better-auth.session_token') ||
-      req.cookies.get('__Secure-better-auth.session_token')
+    const token = req.cookies.get('dh-admin-session')?.value
 
-    if (!sessionCookie) {
+    if (!token) {
+      return NextResponse.redirect(new URL('/admin/login', req.url))
+    }
+
+    try {
+      await jwtVerify(token, SECRET)
+    } catch {
       return NextResponse.redirect(new URL('/admin/login', req.url))
     }
   }

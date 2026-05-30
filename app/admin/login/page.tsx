@@ -19,14 +19,9 @@ export default function AdminLoginPage() {
     setError('')
 
     try {
-      const result = await signIn.email({
-        email,
-        password,
-        callbackURL: '/admin',
-      })
-
+      const result = await signIn(email, password)
       if (result.error) {
-        setError('Invalid email or password')
+        setError(result.error)
       } else {
         router.push('/admin')
         router.refresh()
@@ -108,7 +103,6 @@ export default function AdminLoginPage() {
             </button>
           </form>
         </div>
-
         <p className="text-center text-xs text-gray-400 mt-6">Deansgate Haus · Staff access only</p>
       </div>
     </div>

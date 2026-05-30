@@ -1,43 +1,40 @@
-import { betterAuth } from 'better-auth'
-import { mongodbAdapter } from 'better-auth/adapters/mongodb'
-import { MongoClient } from 'mongodb'
+import { SignJWT, jwtVerify } from 'jose'
+import { cookies } from 'next/headers'
 
-function createAuth() {
-  const secret = process.env.BETTER_AUTH_SECRET || process.env.AUTH_SECRET
-  const url = process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-  
-  console.log('Creating auth, secret exists:', !!secret, 'url:', url)
+const SECRET = new TextEncoder().encode(
+  process.env.AUTH_SECRET || 'fallback-dev-secret-change-in-production'
+)
 
-  if (!secret) {
-    throw new Error('BETTER_AUTH_SECRET environment variable is not set')
-  }
+const COOKIE_NAME = 'dh-admin-session'
 
-  const client = new MongoClient(process.env.MONGODB_URI!)
+export async function createSession(userId: string, email: string) {
+  const token = await new SignJWT({ userId, email })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setExpirationTime('24h')
+    .setIssuedAt()
+    .sign(SECRET)
 
-  return betterAuth({
-    database: mongodbAdapter(client.db()),
-    emailAndPassword: {
-      enabled: true,
-      requireEmailVerification: false,
-    },
-    session: {
-      expiresIn: 60 * 60 * 24,
-      updateAge: 60 * 60,
-    },
-    secret,
-    baseURL: url,
-    trustedOrigins: [url],
+  cookies().set(COOKIE_NAME, token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 60 * 60 * 24, // 24 hours
+    path: '/',
   })
 }
 
-let _auth: ReturnType<typeof createAuth> | null = null
+export async function getSession() {
+  const token = cookies().get(COOKIE_NAME)?.value
+  if (!token) return null
 
-export function getAuth() {
-  if (!_auth) {
-    _auth = createAuth()
+  try {
+    const { payload } = await jwtVerify(token, SECRET)
+    return payload as { userId: string; email: string }
+  } catch {
+    return null
   }
-  return _auth
 }
 
-export const auth = getAuth()
-export type Session = typeof auth.$Infer.Session
+export async function deleteSession() {
+  cookies().delete(COOKIE_NAME)
+}

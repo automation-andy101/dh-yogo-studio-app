@@ -1,7 +1,14 @@
-import { createAuthClient } from 'better-auth/react'
+// Simple client-side auth helpers
 
-export const authClient = createAuthClient({
-  baseURL: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
-})
+export async function signIn(email: string, password: string) {
+  const res = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  })
+  return res.json()
+}
 
-export const { signIn, signOut, useSession } = authClient
+export async function signOut() {
+  await fetch('/api/auth/logout', { method: 'POST' })
+}

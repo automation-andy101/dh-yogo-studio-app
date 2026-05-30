@@ -11,47 +11,37 @@ dotenv.config({ path: path.join(__dirname, '../.env.local') })
 
 const MONGODB_URI = process.env.MONGODB_URI!
 
+const StaffSchema = new mongoose.Schema({
+  email: { type: String, required: true, unique: true, lowercase: true },
+  password: { type: String, required: true },
+  name: { type: String, required: true },
+}, { timestamps: true })
+
+const Staff = mongoose.models.Staff || mongoose.model('Staff', StaffSchema)
+
 async function seedAdmin() {
   await mongoose.connect(MONGODB_URI)
   console.log('Connected to MongoDB')
 
-  const db = mongoose.connection.db!
-
   const email = process.env.ADMIN_EMAIL || 'admin@deansgatehaus.com'
   const password = process.env.ADMIN_PASSWORD || 'Admin1234!'
-  const name = 'Admin'
 
-  const existing = await db.collection('user').findOne({ email })
+  const existing = await Staff.findOne({ email })
   if (existing) {
-    console.log(`Admin user already exists: ${email}`)
+    console.log(`Staff user already exists: ${email}`)
     process.exit(0)
   }
 
   const hashedPassword = await bcrypt.hash(password, 12)
-  const now = new Date()
 
-  await db.collection('user').insertOne({
-    name,
+  await Staff.create({
     email,
-    emailVerified: true,
-    createdAt: now,
-    updatedAt: now,
-  })
-
-  const user = await db.collection('user').findOne({ email })
-
-  await db.collection('account').insertOne({
-    accountId: user!._id.toString(),
-    providerId: 'credential',
-    userId: user!._id,
     password: hashedPassword,
-    createdAt: now,
-    updatedAt: now,
+    name: 'Admin',
   })
 
-  console.log(`✅ Admin user created: ${email}`)
+  console.log(`✅ Admin created: ${email}`)
   console.log(`   Password: ${password}`)
-  console.log(`   Change this password after first login!`)
   process.exit(0)
 }
 
