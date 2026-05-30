@@ -44,9 +44,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Image
             src={theme === 'deansgate-dark' ? '/logo-black.jpg' : '/logo-burgundy.jpg'}
             alt="Deansgate Haus"
-            width={160}
-            height={65}
-            className="object-contain h-auto w-36"
+            width={320}
+            height={140}
+            className="object-contain w-72 h-auto rounded-2xl"
           />
           <p className="text-xs text-gray-400 mt-1">Staff Portal</p>
         </div>
