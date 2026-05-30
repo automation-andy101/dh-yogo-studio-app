@@ -30,7 +30,7 @@ export default function Home() {
             alt="Deansgate Haus"
             width={320}
             height={140}
-            className="object-contain w-72 h-auto"
+            className="object-contain w-72 h-auto rounded-2xl"
           />
         </div>
         <p

@@ -34,7 +34,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             alt="Deansgate Haus"
             width={200}
             height={80}
-            className="object-contain w-40 h-auto"
+            className="object-contain w-72 h-auto rounded-2xl"
           />
           <p className="text-xs text-gray-400 mt-1 font-body">Staff Portal</p>
         </div>
