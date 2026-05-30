@@ -3,7 +3,7 @@ import { mongodbAdapter } from 'better-auth/adapters/mongodb'
 import { MongoClient } from 'mongodb'
 
 console.log('BETTER_AUTH_SECRET exists:', !!process.env.BETTER_AUTH_SECRET)
-console.log('BETTER_AUTH_URL:', process.env.BETTER_AUTH_URL)
+console.log('AUTH_URL:', process.env.AUTH_URL)
 
 const client = new MongoClient(process.env.MONGODB_URI!)
 
