@@ -1,0 +1,9 @@
+{
+  "/page": "app/page.js",
+  "/shop/page": "app/shop/page.js",
+  "/order/mat/page": "app/order/mat/page.js",
+  "/admin/pdq/page": "app/admin/pdq/page.js",
+  "/checkout/page": "app/checkout/page.js",
+  "/order/success/page": "app/order/success/page.js",
+  "/order/drinks/page": "app/order/drinks/page.js"
+}

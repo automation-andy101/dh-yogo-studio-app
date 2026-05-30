@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────
+   THEME: Deansgate Serenity (sage & clay)
+───────────────────────────────────────── */
+[data-theme="serenity"], :root {
+  --bg:           #faf7f2;
+  --bg-card:      #ffffff;
+  --bg-subtle:    #f0ece6;
+  --primary:      #547f52;
+  --primary-dark: #344f34;
+  --primary-light:#a6c2a4;
+  --primary-bg:   #e5ede4;
+  --accent:       #da6830;
+  --accent-bg:    #faeadc;
+  --text:         #1c1c1e;
+  --text-muted:   #547f52;
+  --text-subtle:  #78a175;
+  --border:       #e5ede4;
+  --blob1:        rgba(120,161,117,0.15);
+  --blob2:        rgba(226,133,80,0.10);
+  --blob3:        rgba(120,161,117,0.08);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Jost', sans-serif;
+  --radius:       1rem;
+  --shadow:       0 4px 24px rgba(0,0,0,0.07);
+  --spinner-ring: rgba(120,161,117,0.2);
+  --spinner-top:  #547f52;
+}
+
+/* ─────────────────────────────────────────
+   THEME: Deansgate Light (burgundy on ivory)
+───────────────────────────────────────── */
+[data-theme="deansgate-light"] {
+  --bg:           #F5F0EA;
+  --bg-card:      #ffffff;
+  --bg-subtle:    #EDE8E2;
+  --primary:      #4A0A0A;
+  --primary-dark: #2d0606;
+  --primary-light:#8B3030;
+  --primary-bg:   #f3e8e8;
+  --accent:       #E8DDD0;
+  --accent-bg:    #f9f5f0;
+  --text:         #1a0505;
+  --text-muted:   #4A0A0A;
+  --text-subtle:  #8B3030;
+  --border:       #e0d8d0;
+  --blob1:        rgba(74,10,10,0.08);
+  --blob2:        rgba(232,221,208,0.4);
+  --blob3:        rgba(74,10,10,0.04);
+  --font-display: 'Bodoni Moda', 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Jost', sans-serif;
+  --radius:       0.75rem;
+  --shadow:       0 4px 24px rgba(74,10,10,0.08);
+  --spinner-ring: rgba(74,10,10,0.15);
+  --spinner-top:  #4A0A0A;
+}
+
+/* ─────────────────────────────────────────
+   THEME: Deansgate Dark (cream on black)
+───────────────────────────────────────── */
+[data-theme="deansgate-dark"] {
+  --bg:           #0A0A0A;
+  --bg-card:      #141414;
+  --bg-subtle:    #1a1a1a;
+  --primary:      #E8DDD0;
+  --primary-dark: #ffffff;
+  --primary-light:#c4b8aa;
+  --primary-bg:   #1f1f1f;
+  --accent:       #4A0A0A;
+  --accent-bg:    #200808;
+  --text:         #E8DDD0;
+  --text-muted:   #c4b8aa;
+  --text-subtle:  #8a7f74;
+  --border:       #2a2a2a;
+  --blob1:        rgba(232,221,208,0.04);
+  --blob2:        rgba(74,10,10,0.15);
+  --blob3:        rgba(232,221,208,0.02);
+  --font-display: 'Bodoni Moda', 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Jost', sans-serif;
+  --radius:       0.75rem;
+  --shadow:       0 4px 32px rgba(0,0,0,0.4);
+  --spinner-ring: rgba(232,221,208,0.15);
+  --spinner-top:  #E8DDD0;
+}
+
+/* ─────────────────────────────────────────
+   BASE STYLES (use CSS vars throughout)
+───────────────────────────────────────── */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.font-display { font-family: var(--font-display); }
+
+.blob-bg {
+  background:
+    radial-gradient(ellipse at 20% 50%, var(--blob1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, var(--blob2) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, var(--blob3) 0%, transparent 50%),
+    var(--bg);
+  transition: background 0.3s ease;
+}
+
+/* Cards */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 3px; }
+
+/* Spinner */
+.spinner {
+  border: 2px solid var(--spinner-ring);
+  border-top: 2px solid var(--spinner-top);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+/* Admin sidebar */
+.sidebar-item {
+  @apply flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200;
+}
+.sidebar-item:hover  { background: var(--primary-bg); color: var(--primary); }
+.sidebar-item.active { background: var(--primary-bg); color: var(--primary-dark); font-weight: 600; }
+
+/* Status badges */
+.status-pending   { @apply bg-yellow-100 text-yellow-800; }
+.status-paid      { @apply bg-blue-100 text-blue-800; }
+.status-preparing { @apply bg-orange-100 text-orange-800; }
+.status-ready     { @apply bg-green-100 text-green-800; }
+.status-completed { @apply bg-gray-100 text-gray-600; }
+.status-cancelled { @apply bg-red-100 text-red-800; }
+
+/* Theme-aware utility classes */
+.bg-themed-card    { background-color: var(--bg-card); }
+.bg-themed-subtle  { background-color: var(--bg-subtle); }
+.bg-themed-primary { background-color: var(--primary); }
+.text-themed       { color: var(--text); }
+.text-themed-muted { color: var(--text-muted); }
+.border-themed     { border-color: var(--border); }
