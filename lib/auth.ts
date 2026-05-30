@@ -11,11 +11,13 @@ export const auth = betterAuth({
     requireEmailVerification: false,
   },
   session: {
-    expiresIn: 60 * 60 * 24, // 24 hours
-    updateAge: 60 * 60,      // refresh if older than 1 hour
+    expiresIn: 60 * 60 * 24,
+    updateAge: 60 * 60,
   },
+  secret: process.env.BETTER_AUTH_SECRET!,
+  baseURL: process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
   trustedOrigins: [
-    process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+    process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
   ],
 })
 
