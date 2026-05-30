@@ -17,7 +17,7 @@ export const auth = betterAuth({
     expiresIn: 60 * 60 * 24,
     updateAge: 60 * 60,
   },
-  secret: process.env.BETTER_AUTH_SECRET!,
+  secret: process.env.AUTH_SECRET!,
   baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
   trustedOrigins: [
     process.env.BETTER_AUTH_URL || 'http://localhost:3000'
